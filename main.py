@@ -77,7 +77,10 @@ async def send_message(request: Request):
         fcm_token = token.get("token")
         notification_title = Chatrooms.find_one({"id": item["chatroom_id"]}, {"_id": 0, "name": 1}).get("name")
         notification_body = item["message"]
-        result = fcm.notify(fcm_token=fcm_token, notification_title=notification_title, notification_body=notification_body)
+        data_message = {
+            "chatroom_id": item["chatroom_id"]
+        }
+        result = fcm.notify(fcm_token=fcm_token, notification_title=notification_title, notification_body=notification_body, data_payload=data_message)
 
     data = {"status": "OK"}
     return JSONResponse(content=jsonable_encoder(data))
